@@ -8,7 +8,7 @@
     <groupId>com.github.ilpersi</groupId>
 	<artifactId>pushover-client</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<name>pushover client</name>
     <description>A fork of the standard pushover client for java containing up to date features</description>
     <url>http://github.com/ilpersi/pushover4j</url>
@@ -125,7 +125,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
+                <version>1.6.7</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>

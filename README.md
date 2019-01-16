@@ -1,10 +1,8 @@
 Pushover4j
 --------
 
-[![Build Status](https://travis-ci.org/sps/pushover4j.png?branch=master)](https://travis-ci.org/sps/pushover4j)
-[![Coverage Status](https://coveralls.io/repos/sps/pushover4j/badge.png?branch=master)](https://coveralls.io/r/sps/pushover4j?branch=master)
 
-A simple java client for [pushover](https://pushover.net/) notification service. Example:
+A fork of the [pushover4j](https://github.com/sps/pushover4j/) java client for [pushover](https://pushover.net/) notification service. Example:
 ```
 PushoverClient client = new PushoverRestClient();        
 
@@ -23,9 +21,10 @@ Status result = client.pushMessage(PushoverMessage.builderWithApiToken("MY_APP_A
       .setDevice("<your device name>")
       .setPriority(MessagePriority.HIGH) // LOWEST,QUIET,NORMAL,HIGH,EMERGENCY
       .setTitle("Testing")
-      .setUrl("https://github.com/sps/pushover4j")
+      .setUrl("https://github.com/ilpersi/pushover4j")
       .setTitleForURL("pushover4j github repo")
       .setSound("magic")
+      .setAttachment(new File("cool_image.png"))
       .build());
 System.out.println(String.format("status: %d, request id: %s", result.getStatus(), result.getRequestId()));
 ```
@@ -36,24 +35,24 @@ for (PushOverSound sound : client.getSounds() ) {
     System.out.println(String.format("name: %s, id: %s", sound.getName(), sound.getId()));
 }              
 ```
-Check the Wiki for more examples and features. If something is missing please raise a request. 
+
 ### Installing 
 Installation is best done through the Maven build system. We should keep the maven system up to date with releases but you are free to manually install things. Java 6 or higher required. 
 ##### For maven
-Just search the maven repo for ` pushover-client ` or add the following to your POM
+Use my fork of the ` pushover-client ` or add the following to your POM
 ```
 <dependency>
-  <groupId>com.github.sps.pushover.net</groupId>
-  <artifactId>pushover-client</artifactId>
-  <version>1.5.1</version>
+    <groupId>com.github.ilpersi</groupId>
+    <artifactId>pushover-client</artifactId>
+    <version>1.0.2</version>
 </dependency>
 ```
 
 ##### Other build systems
 for the non-maven types, here are the required dependencies
-* [pushover4j](http://github.com/sps/pushover4j/downloads)
-* [gson 2.3.1](https://github.com/google/gson)
-* [apache commons httpclient 4.4.1](http://hc.apache.org/downloads.cgi)
+* [pushover4j](https://github.com/ilpersi/pushover4j/downloads)
+* [gson 2.8.5](https://github.com/google/gson)
+* [apache commons httpclient 4.5.6](http://hc.apache.org/downloads.cgi)
  
 ##### Note: Java 6 users
 For java 6 users you will need to enhance your security provider. Pushover uses a Diffie-Hillman 1024 for handshake on its new key which Java 6 does not support natively. If your country allows it you may install the Boucny Castle provider to continue using the service. Otherwise newer versions of Java 7 and Java 8 will work natively.
