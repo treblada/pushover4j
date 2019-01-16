@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  * 
- * @author Sean Scanlon <sean.scanlon@gmail.com>
+ * @author <a href="mailto:sean.scanlon@gmail.com">Sean Scanlon</a>
  * 
  * @since Dec 18, 2012
  */
@@ -60,7 +60,8 @@ public class PushoverMessage {
         }
 
         /**
-         * (required) - your application's API token
+         * @param apiToken (required) - your application's API token
+         * @return the current Builder instance
          */
         public Builder setApiToken(String apiToken) {
             msg.apiToken = apiToken;
@@ -68,8 +69,9 @@ public class PushoverMessage {
         }
 
         /**
-         * (required) - the user/group key (not e-mail address) of your user or group. 
+         * @param userId  (required) - the user/group key (not e-mail address) of your user or group.
          * Viewable when logged into the dashboard
+         * @return the current Builder instance
          */
         public Builder setUserId(String userId) {
             msg.userId = userId;
@@ -77,7 +79,8 @@ public class PushoverMessage {
         }
 
         /**
-         * (required on push notifications, optional others) - your message
+         * @param message  (required on push notifications, optional others) - your message
+         * @return the current Builder instance
          */
         public Builder setMessage(String message) {
             msg.message = message;
@@ -85,8 +88,9 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - your user's device identifier to send the message directly to that device,
+         * @param device  (optional) - your user's device identifier to send the message directly to that device,
          * rather than all of the user's devices
+         * @return the current Builder instance
          */
         public Builder setDevice(String device) {
             msg.device = device;
@@ -94,7 +98,8 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - your message's title, otherwise uses your app's name
+         * @param title  (optional) - your message's title, otherwise uses your app's name
+         * @return the current Builder instance
          */
         public Builder setTitle(String title) {
             msg.title = title;
@@ -102,7 +107,8 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - a supplementary URL to show with your message
+         * @param url  (optional) - a supplementary URL to show with your message
+         * @return the current Builder instance
          */
         public Builder setUrl(String url) {
             msg.url = url;
@@ -110,7 +116,8 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - a title for your supplementary URL
+         * @param titleForURL  (optional) - a title for your supplementary URL
+         * @return the current Builder instance
          */
         public Builder setTitleForURL(String titleForURL) {
             msg.titleForURL = titleForURL;
@@ -118,8 +125,9 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - set to MessagePriority.HIGH to display as high-priority and bypass quiet
+         * @param priority  (optional) - set to MessagePriority.HIGH to display as high-priority and bypass quiet
          * hours, or MessagePriority.QUIET to always send as a quiet notification
+         * @return the current Builder instance
          */
         public Builder setPriority(MessagePriority priority) {
             msg.priority = priority;
@@ -127,8 +135,9 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - set to a Unix timestamp to have your message show with a particular time,
+         * @param timestamp  (optional) - set to a Unix timestamp to have your message show with a particular time,
          * rather than now
+         * @return the current Builder instance
          */
         public Builder setTimestamp(Long timestamp) {
             msg.timestamp = timestamp;
@@ -136,8 +145,9 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - set to the name of one of the sounds supported by device clients to override
+         * @param sound  (optional) - set to the name of one of the sounds supported by device clients to override
          * the user's default sound choice
+         * @return the current Builder instance
          */
         public Builder setSound(String sound) {
             msg.sound = sound;
@@ -145,8 +155,9 @@ public class PushoverMessage {
         }
         
         /**
-         * (required when priority is emergency) - how often to retry alerting
+         * @param seconds  (required when priority is emergency) - how often to retry alerting
          * the user until acknowledged. No less than 30 seconds
+         * @return the current Builder instance
          */
         public Builder setRetry(int seconds) {
             msg.retry = seconds;
@@ -154,8 +165,9 @@ public class PushoverMessage {
         }
         
         /**
-         * (required when priority is emergency) - how long to keep retrying the
+         * @param seconds  (required when priority is emergency) - how long to keep retrying the
          * user unless they acknowledge. System limits to 86400 (24 hours)
+         * @return the current Builder instance
          */
         public Builder setExpire(int seconds) {
             msg.expire = seconds;
@@ -163,8 +175,9 @@ public class PushoverMessage {
         }
         
         /**
-         * (optional) - a publicly accessable URL that the system will post to 
+         * @param url  (optional) - a publicly accessable URL that the system will post to
          * when the user acknowledges the alert.
+         * @return the current Builder instance
          */
         public Builder setCallbackUrl(String url) {
             msg.emergencyCallbackUrl = url;
@@ -172,8 +185,9 @@ public class PushoverMessage {
         }
 
         /**
-         * (optional) - As of version 3.0 of our iOS, Android, and
+         * @param attachment (optional) - As of version 3.0 of our iOS, Android, and
          * Desktop apps, Pushover messages can include an image attachment.
+         * @return the current Builder instance
          */
         public Builder setAttachment(File attachment) {
             msg.attachment = attachment;

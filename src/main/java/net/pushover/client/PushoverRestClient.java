@@ -23,7 +23,7 @@ import org.apache.http.message.BasicNameValuePair;
 /**
  * Implementation of {@link PushoverClient}
  * 
- * @author Sean Scanlon <sean.scanlon@gmail.com>
+ * @author <a href="mailto:sean.scanlon@gmail.com">Sean Scanlon</a>
  * 
  * @since Dec 18, 2012
  */
@@ -46,7 +46,7 @@ public class PushoverRestClient implements PushoverClient {
      * 
      * @param msg A builder constructed {@link PushoverMessage}. Must have at least API token, receiver, and message
      * @return {@link Status} Simplified response handler that contains just the status and request token.
-     * @throws PushoverException 
+     * @throws PushoverException based on the results of the APIs
      */
     @Override
     public Status pushMessage(PushoverMessage msg) throws PushoverException {
@@ -65,7 +65,7 @@ public class PushoverRestClient implements PushoverClient {
      * 
      * @param msg A builder constructed {@link PushoverMessage}. Must have at least API token, receiver, and message
      * @return {@link Response} Advanced response handler that contains most/all known response fields.
-     * @throws PushoverException 
+     * @throws PushoverException based on the results of the APIs
      */
     public Response pushMessageResponse(PushoverMessage msg) throws PushoverException {
         try {
@@ -82,7 +82,7 @@ public class PushoverRestClient implements PushoverClient {
      * 
      * @param msg A builder constructed {@link PushoverMessage}. Must have at least API token and receiver.
      * @return {@link Response} Advanced response handler that contains most/all known response fields.
-     * @throws PushoverException 
+     * @throws PushoverException based on the results of the APIs
      */
     public Response requestVerification(PushoverMessage msg) throws PushoverException {
 
@@ -113,7 +113,7 @@ public class PushoverRestClient implements PushoverClient {
      * @param apiToken API key for the application
      * @param receipt receipt key returned after emergency priority message post
      * @return {@link Receipt} Purpose built handler for the many filed Receipt response.
-     * @throws PushoverException 
+     * @throws PushoverException based on the results of the APIs
      */
     public Receipt requestEmergencyReceipt(String apiToken, String receipt) throws PushoverException{
           
@@ -136,7 +136,7 @@ public class PushoverRestClient implements PushoverClient {
      * @param apiToken API key for the application
      * @param receipt receipt key returned after emergency priority message post
      * @return {@link Response} Likely just a status and request token but errors could exist so a Response is better suited.
-     * @throws PushoverException 
+     * @throws PushoverException based on the results of the APIs
      */
     public Response cancelEmergencyMessage(String apiToken, String receipt) throws PushoverException {
          final HttpPost post = new HttpPost(RECEIPT_CHECK_URL_FRAGMENT + receipt +"/cancel.json");
@@ -212,7 +212,7 @@ public class PushoverRestClient implements PushoverClient {
      * not changed or added any sounds. 
      * 
      * @return Set of {@link PushOverSound} that contains all known supported sounds at time of call. 
-     * @throws PushoverException 
+     * @throws PushoverException based on the results of the APIs
      */
     @Override
     public Set<PushOverSound> getSounds() throws PushoverException {
@@ -238,7 +238,7 @@ public class PushoverRestClient implements PushoverClient {
     /**
      * Optionally provide an alternative {@link HttpClient}
      * 
-     * @param httpClient
+     * @param httpClient the alternative HttpClient
      */
     public void setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;

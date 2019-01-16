@@ -117,7 +117,7 @@ public class PushoverResponseFactory {
      * Parses the returned HttpResponse from a sound list request into a SoundSet object
      * 
      * @param response HttpResponse returned from the HttpPost to the receipt API
-     * @return Set<{@link PushOverSound}> Set of PushOverSounds for supported sounds
+     * @return Set&lt;{@link PushOverSound}&gt; Set of PushOverSounds for supported sounds
      * @throws IOException on null response and parse failures
      */
     public static Set<PushOverSound> createSoundSet(HttpResponse response) throws IOException {
