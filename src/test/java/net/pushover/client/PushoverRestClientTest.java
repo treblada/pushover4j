@@ -37,7 +37,7 @@ public class PushoverRestClientTest {
     private HttpResponse mockHttpResponse;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         httpClient = mock(HttpClient.class);
         mockHttpResponse = mock(HttpResponse.class);
 
@@ -129,8 +129,6 @@ public class PushoverRestClientTest {
     public void testPushMessageWithAttachment() throws Exception {
 
         final MessagePriority expectedPriority = MessagePriority.EMERGENCY;
-        final int requestedRetry = 120;
-        final int requestedExpire = 7200;
         final String expectedReceipt = "asdfghjkl";
 
         when(httpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
@@ -140,8 +138,6 @@ public class PushoverRestClientTest {
                 .setUserId("")
                 .setMessage("")
                 .setPriority(expectedPriority)
-                .setRetry(requestedRetry)
-                .setExpire(requestedExpire)
                 .setAttachment(new File("attachment\\test_attachment.jpg"))
                 .build());
 
@@ -167,7 +163,7 @@ public class PushoverRestClientTest {
     @Test
     public void testRequestVerification() throws Exception {
 
-       final String expectedUser = "bnmUaSdfqwER";;
+       final String expectedUser = "bnmUaSdfqwER";
         final String expectedDevice = "testPad";
 
         when(httpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
