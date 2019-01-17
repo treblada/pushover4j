@@ -1,6 +1,6 @@
 Pushover4j
 --------
-
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.ilpersi/pushover-client.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.ilpersi%22%20AND%20a:%22pushover-client%22)
 
 A fork of the [pushover4j](https://github.com/sps/pushover4j/) java client for [pushover](https://pushover.net/) notification service. Example:
 ```
