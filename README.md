@@ -58,4 +58,7 @@ for the non-maven types, here are the required dependencies
 For java 6 users you will need to enhance your security provider. Pushover uses a Diffie-Hillman 1024 for handshake on its new key which Java 6 does not support natively. If your country allows it you may install the Boucny Castle provider to continue using the service. Otherwise newer versions of Java 7 and Java 8 will work natively.
 
 ### Whats new from the standard version?
-I've integrated all the fixes from [hhocker fork](https://github.com/hhocker/pushover4j) and added the possibility to send [image attachmets](https://blog.pushover.net/posts/pushing-images-with-pushover-30) together with messages
+I've integrated all the fixes from [hhocker fork](https://github.com/hhocker/pushover4j) and added the latest features available in Pushover
+* the possibility to send [image attachmets](https://blog.pushover.net/posts/pushing-images-with-pushover-30) together with messages
+* the possibility to use [monospace font](https://blog.pushover.net/posts/2019/3/animated-gifs-and-monospace-text) in notification messages
+* the possibility to send [HTML formatted](https://pushover.net/api#html) notifications 
