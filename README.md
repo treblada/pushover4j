@@ -24,7 +24,7 @@ Status result = client.pushMessage(PushoverMessage.builderWithApiToken("MY_APP_A
       .setUrl("https://github.com/ilpersi/pushover4j")
       .setTitleForURL("pushover4j github repo")
       .setSound("magic")
-      .setAttachment(new File("cool_image.png"))
+      .setImage(new File("cool_image.png"))
       .build());
 System.out.println(String.format("status: %d, request id: %s", result.getStatus(), result.getRequestId()));
 ```

@@ -187,12 +187,20 @@ public class PushoverRestClient implements PushoverClient {
               }
         }
 
-        if (msg.getAttachment() != null) {
-            File attachment = msg.getAttachment();
+        if (msg.getImage() != null) {
+            File image = msg.getImage();
             MimetypesFileTypeMap ftm = new MimetypesFileTypeMap();
-            ContentType ct = ContentType.create(ftm.getContentType(attachment));
+            ContentType ct = ContentType.create(ftm.getContentType(image));
 
-            entityBuilder.addBinaryBody("attachment", attachment, ct, attachment.getName());
+            entityBuilder.addBinaryBody("attachment", image, ct, image.getName());
+        }
+
+        if (msg.getHTML()) {
+            entityBuilder.addTextBody("html", "1");
+        }
+
+        if (msg.getMonospace()) {
+            entityBuilder.addTextBody("monospace", "1");
         }
 
         post.setEntity(entityBuilder.build());

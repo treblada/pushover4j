@@ -36,16 +36,22 @@ public class PushoverMessage {
     
     private String emergencyCallbackUrl; //a publicly accessable webpage on your server to handle the acknoldegements of the emergency priority message.
 
-    private File attachment;
-    
+    private File image; // As of version 3.0 of our iOS, Android, and Desktop apps, Pushover messages can include an image.
+
+    private boolean html = false; // As of version 2.3 of our device clients, messages can be formatted with HTML tags
+
+    private boolean monospace = false; // As of version 3.4, messages can be formatted with a monospace font.
+
     private PushoverMessage() {
         // use the builder
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Builder builderWithApiToken(String token) {
         return new Builder().setApiToken(token);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static class Builder {
 
         private PushoverMessage msg;
@@ -185,12 +191,43 @@ public class PushoverMessage {
         }
 
         /**
-         * @param attachment (optional) - As of version 3.0 of our iOS, Android, and
-         * Desktop apps, Pushover messages can include an image attachment.
+         * @param image As of version 3.0 of our iOS, Android, and
+         * Desktop apps, Pushover messages can include an image.
+         * @deprecated use setImage instead
          * @return the current Builder instance
          */
-        public Builder setAttachment(File attachment) {
-            msg.attachment = attachment;
+        @Deprecated
+        public Builder setAttachment(File image) {
+            return setImage(image);
+        }
+
+        /**
+         * @param image As of version 3.0 of our iOS, Android, and
+         *              Desktop apps, Pushover messages can include an image.
+         * @return the current Builder instance
+         */
+        public Builder setImage(File image) {
+            msg.image = image;
+            return this;
+        }
+
+        /**
+         * @param isHTML As of version 2.3 of our device clients, messages
+         *               can be formatted with HTML tags.
+         * @return the current Builder instance
+         */
+        public Builder setHTML(boolean isHTML) {
+            msg.html = isHTML;
+            return this;
+        }
+
+        /**
+         * @param isMonospace As of version 3.4, messages can be formatted
+         *                    with a monospace font.
+         * @return the current Builder instance
+         */
+        public Builder setMonospace(boolean isMonospace) {
+            msg.monospace = isMonospace;
             return this;
         }
         
@@ -228,9 +265,7 @@ public class PushoverMessage {
         return priority;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
-    }
+    public Long getTimestamp() {return timestamp;}
 
     public String getSound() {
         return sound;
@@ -248,7 +283,15 @@ public class PushoverMessage {
         return emergencyCallbackUrl;
     }
 
-    public File getAttachment() {
-        return attachment;
-    }
+    /**
+     * @deprecated Use getImage()
+     */
+    @Deprecated
+    public File getAttachment() { return getImage();}
+
+    public File getImage() {return image;}
+
+    public boolean getHTML() {return html;}
+
+    public boolean getMonospace() {return monospace;}
 }

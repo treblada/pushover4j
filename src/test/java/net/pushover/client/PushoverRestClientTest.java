@@ -126,7 +126,7 @@ public class PushoverRestClientTest {
     }
 
     @Test
-    public void testPushMessageWithAttachment() throws Exception {
+    public void testPushMessageWithImage() throws Exception {
 
         final MessagePriority expectedPriority = MessagePriority.EMERGENCY;
         final String expectedReceipt = "asdfghjkl";
@@ -138,7 +138,7 @@ public class PushoverRestClientTest {
                 .setUserId("")
                 .setMessage("")
                 .setPriority(expectedPriority)
-                .setAttachment(new File("attachment\\test_attachment.jpg"))
+                .setImage(new File("image\\test_image.jpg"))
                 .build());
 
         ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
@@ -154,7 +154,7 @@ public class PushoverRestClientTest {
         final String postBody = bytes.toString();
 
         assertTrue(postBody.contains(
-                "Content-Disposition: form-data; name=\"attachment\"; filename=\"test_attachment.jpg\"\r\n" +
+                "Content-Disposition: form-data; name=\"attachment\"; filename=\"test_image.jpg\"\r\n" +
                         "Content-Type: image/jpeg\r\n" +
                         "Content-Transfer-Encoding: binary")
         );
@@ -260,5 +260,63 @@ public class PushoverRestClientTest {
         sounds = client.getSounds();
         assertNotNull(sounds);
         verifyNoMoreInteractions(httpClient);
+    }
+
+    @Test
+    public void testPushMessageWithHTML() throws Exception {
+
+        when(httpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
+        when(mockHttpResponse.getEntity()).thenReturn(new StringEntity("{\"status\":1}", "UTF-8"));
+
+        client.pushMessage(PushoverMessage.builderWithApiToken("")
+                .setUserId("")
+                .setMessage("")
+                .setHTML(true)
+                .build());
+
+        ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
+
+        verify(httpClient).execute(captor.capture());
+
+        final HttpPost post = captor.getValue();
+        final HttpEntity entity = post.getEntity();
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        entity.writeTo(bytes);
+
+        final String postBody = bytes.toString();
+        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"html\"\r\n" +
+                "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
+                "Content-Transfer-Encoding: 8bit\r\n\r\n1"));
+
+    }
+
+    @Test
+    public void testPushMessageWithMonospace() throws Exception {
+
+        when(httpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
+        when(mockHttpResponse.getEntity()).thenReturn(new StringEntity("{\"status\":1}", "UTF-8"));
+
+        client.pushMessage(PushoverMessage.builderWithApiToken("")
+                .setUserId("")
+                .setMessage("")
+                .setMonospace(true)
+                .build());
+
+        ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
+
+        verify(httpClient).execute(captor.capture());
+
+        final HttpPost post = captor.getValue();
+        final HttpEntity entity = post.getEntity();
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        entity.writeTo(bytes);
+
+        final String postBody = bytes.toString();
+        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"monospace\"\r\n" +
+                "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
+                "Content-Transfer-Encoding: 8bit\r\n\r\n1"));
+
     }
 }
