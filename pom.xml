@@ -8,7 +8,7 @@
     <groupId>com.github.ilpersi</groupId>
 	<artifactId>pushover-client</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.2</version>
+	<version>1.1</version>
 	<name>pushover client</name>
     <description>A fork of the standard pushover client for java containing up to date features</description>
     <url>http://github.com/ilpersi/pushover4j</url>
