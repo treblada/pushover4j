@@ -44,7 +44,7 @@ Use my fork of the ` pushover-client ` or add the following to your POM
 <dependency>
     <groupId>com.github.ilpersi</groupId>
     <artifactId>pushover-client</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
