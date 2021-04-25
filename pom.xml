@@ -8,7 +8,7 @@
     <groupId>com.github.ilpersi</groupId>
 	<artifactId>pushover-client</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<name>pushover client</name>
     <description>A fork of the standard pushover client for java containing up to date features</description>
     <url>http://github.com/ilpersi/pushover4j</url>
@@ -56,8 +56,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
             <plugin>
@@ -133,7 +133,7 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-		</plugins>
+        </plugins>
 	</build>
 	<dependencies>
 		<dependency>
