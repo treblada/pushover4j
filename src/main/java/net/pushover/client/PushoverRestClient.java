@@ -2,6 +2,7 @@ package net.pushover.client;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class PushoverRestClient implements PushoverClient {
     public static final String RECEIPT_CHECK_URL_FRAGMENT = "https://api.pushover.net/1/receipts/"; //needs receipt and then action attached to the end.
     
     private static final HttpUriRequest SOUND_LIST_REQUEST = new HttpGet(SOUND_LIST_URL);
+    private static final ContentType TEXT_PLAIN_UTF8 = ContentType.create("text/plain", StandardCharsets.UTF_8);
 
     private HttpClient httpClient = HttpClients.custom().useSystemProperties().build();
 
@@ -90,8 +92,8 @@ public class PushoverRestClient implements PushoverClient {
 
         final MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
 
-        entityBuilder.addTextBody("token", msg.getApiToken());
-        entityBuilder.addTextBody("user", msg.getUserId());
+        entityBuilder.addTextBody("token", msg.getApiToken(), TEXT_PLAIN_UTF8);
+        entityBuilder.addTextBody("user", msg.getUserId(), TEXT_PLAIN_UTF8);
         
         addPairIfNotNull(entityBuilder, "device", msg.getDevice());
         
@@ -157,14 +159,12 @@ public class PushoverRestClient implements PushoverClient {
     
     private HttpResponse postToMessageApi(PushoverMessage msg) throws PushoverException {
 
-        final HttpPost post = new HttpPost(PUSH_MESSAGE_URL);
-        HttpResponse response = null;
-        
         final MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
 
-        entityBuilder.addTextBody("token", msg.getApiToken());
-        entityBuilder.addTextBody("user", msg.getUserId());
-        entityBuilder.addTextBody("message", msg.getMessage());
+        entityBuilder.addTextBody("token", msg.getApiToken(), TEXT_PLAIN_UTF8);
+        entityBuilder.addTextBody("user", msg.getUserId(), TEXT_PLAIN_UTF8);
+
+        entityBuilder.addTextBody("message", msg.getMessage(), TEXT_PLAIN_UTF8);
 
         addPairIfNotNull(entityBuilder, "title", msg.getTitle());
 
@@ -203,6 +203,9 @@ public class PushoverRestClient implements PushoverClient {
             entityBuilder.addTextBody("monospace", "1");
         }
 
+        final HttpPost post = new HttpPost(PUSH_MESSAGE_URL);
+        HttpResponse response;
+
         post.setEntity(entityBuilder.build());
 
         try {
@@ -239,7 +242,7 @@ public class PushoverRestClient implements PushoverClient {
 
     private void addPairIfNotNull(MultipartEntityBuilder entityBuilder, String key, Object value) {
         if (value != null) {
-            entityBuilder.addTextBody(key, value.toString());
+            entityBuilder.addTextBody(key, value.toString(), TEXT_PLAIN_UTF8);
         }
     }
 

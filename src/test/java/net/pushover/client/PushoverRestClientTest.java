@@ -55,13 +55,14 @@ public class PushoverRestClientTest {
     public void testPushMessageWithNonDefaultPriority() throws Exception {
 
         final MessagePriority expectedPriority = MessagePriority.HIGH;
+        String expectedMessage = "UTF-8 MSG (ue=ü, oe=ö, ae=ä)";
 
         when(httpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
         when(mockHttpResponse.getEntity()).thenReturn(new StringEntity("{\"status\":1}", "UTF-8"));
 
-        client.pushMessage(PushoverMessage.builderWithApiToken("")
-                .setUserId("")
-                .setMessage("")
+        client.pushMessage(PushoverMessage.builderWithApiToken("TOKEN_CONTENT")
+                .setUserId("USER_ID")
+                .setMessage(expectedMessage)
                 .setPriority(expectedPriority)
                 .build());
 
@@ -76,10 +77,13 @@ public class PushoverRestClientTest {
         entity.writeTo(bytes);
 
         final String postBody = bytes.toString();
-        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
-                "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
+        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
+                "Content-Type: text/plain; charset=UTF-8\r\n" +
                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedPriority.getPriority()));
 
+        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"message\"\r\n" +
+                "Content-Type: text/plain; charset=UTF-8\r\n" +
+                "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedMessage));
     }
     
      @Test
@@ -113,13 +117,13 @@ public class PushoverRestClientTest {
 
         final String postBody = bytes.toString();
 
-        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
-                 "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
+        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
+                 "Content-Type: text/plain; charset=UTF-8\r\n" +
                  "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedPriority.getPriority()));
-        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"retry\"\r\n" +
+        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"retry\"\r\n" +
                  "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
                  "Content-Transfer-Encoding: 8bit\r\n\r\n" + requestedRetry));
-        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"expire\"\r\n" +
+        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"expire\"\r\n" +
                  "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
                  "Content-Transfer-Encoding: 8bit\r\n\r\n" + requestedExpire));
 
@@ -138,7 +142,7 @@ public class PushoverRestClientTest {
                 .setUserId("")
                 .setMessage("")
                 .setPriority(expectedPriority)
-                .setImage(new File("image\\test_image.jpg"))
+                .setImage(new File("image/test_image.jpg"))
                 .build());
 
         ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
@@ -188,10 +192,10 @@ public class PushoverRestClientTest {
         final String postBody = bytes.toString();
 
         assertTrue(postBody.contains("Content-Disposition: form-data; name=\"user\"\r\n" +
-                "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
+                "Content-Type: text/plain; charset=UTF-8\r\n" +
                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedUser));
         assertTrue(postBody.contains("Content-Disposition: form-data; name=\"device\"\r\n" +
-                "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
+                "Content-Type: text/plain; charset=UTF-8\r\n" +
                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedDevice));
 
     }
