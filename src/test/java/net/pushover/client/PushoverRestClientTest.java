@@ -1,18 +1,5 @@
 package net.pushover.client;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,10 +8,18 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * 
@@ -36,7 +31,7 @@ public class PushoverRestClientTest {
     private PushoverRestClient client;
     private HttpResponse mockHttpResponse;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         httpClient = mock(HttpClient.class);
         mockHttpResponse = mock(HttpResponse.class);
@@ -45,10 +40,13 @@ public class PushoverRestClientTest {
         client.setHttpClient(httpClient);
     }
 
-    @Test(expected = PushoverException.class)
+    @Test
     public void testPushMessageWithPostFailure() throws Exception {
         when(httpClient.execute(any(HttpUriRequest.class))).thenThrow(new IOException("nope!"));
-        client.pushMessage(PushoverMessage.builderWithApiToken("").build());
+        assertThrows(
+                PushoverException.class,
+                () -> client.pushMessage(PushoverMessage.builderWithApiToken("").build())
+        );
     }
 
     @Test
@@ -77,13 +75,19 @@ public class PushoverRestClientTest {
         entity.writeTo(bytes);
 
         final String postBody = bytes.toString();
-        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
+        assertTrue(
+                postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
                 "Content-Type: text/plain; charset=UTF-8\r\n" +
-                "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedPriority.getPriority()));
+                "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedPriority.getPriority()),
+                postBody
+        );
 
-        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"message\"\r\n" +
+        assertTrue(
+                postBody.contains("Content-Disposition: form-data; name=\"message\"\r\n" +
                 "Content-Type: text/plain; charset=UTF-8\r\n" +
-                "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedMessage));
+                "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedMessage),
+                postBody
+        );
     }
     
      @Test
@@ -117,15 +121,24 @@ public class PushoverRestClientTest {
 
         final String postBody = bytes.toString();
 
-        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
+        assertTrue(
+                postBody.contains("Content-Disposition: form-data; name=\"priority\"\r\n" +
                  "Content-Type: text/plain; charset=UTF-8\r\n" +
-                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedPriority.getPriority()));
-        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"retry\"\r\n" +
+                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + expectedPriority.getPriority()),
+                postBody
+        );
+        assertTrue(
+                postBody.contains("Content-Disposition: form-data; name=\"retry\"\r\n" +
                  "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
-                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + requestedRetry));
-        assertTrue(postBody, postBody.contains("Content-Disposition: form-data; name=\"expire\"\r\n" +
+                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + requestedRetry),
+                postBody
+        );
+        assertTrue(
+                postBody.contains("Content-Disposition: form-data; name=\"expire\"\r\n" +
                  "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
-                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + requestedExpire));
+                 "Content-Transfer-Encoding: 8bit\r\n\r\n" + requestedExpire),
+                postBody
+        );
 
     }
 
@@ -245,10 +258,10 @@ public class PushoverRestClientTest {
 
     }
     
-    @Test(expected = PushoverException.class)
+    @Test
     public void testGetSoundsWithFailure() throws Exception {
         when(httpClient.execute(any(HttpUriRequest.class))).thenThrow(new IOException("nope!"));
-        client.getSounds();
+        assertThrows(PushoverException.class, () -> client.getSounds());
     }
 
     @Test

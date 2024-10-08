@@ -1,48 +1,44 @@
 package net.pushover.client;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.apache.http.HttpResponse;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHeader;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHeader;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PushoverResponseFactoryTest {
 
     private HttpResponse response;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         assertNotNull(new PushoverResponseFactory());
         response = mock(HttpResponse.class);
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testNullStausResponse() throws Exception {
-        assertNull(PushoverResponseFactory.createStatus(null));
+        assertThrows(IOException.class, () -> PushoverResponseFactory.createStatus(null));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testNullEntityStatusResponse() throws Exception {
-        assertNull(PushoverResponseFactory.createStatus(response));
+        assertThrows(IOException.class, () -> PushoverResponseFactory.createStatus(response));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testMalformedStatusResponse() throws IOException {
         when(response.getEntity()).thenReturn(new StringEntity("{"));
-        PushoverResponseFactory.createStatus(response);        
+        assertThrows(IOException.class, () -> PushoverResponseFactory.createStatus(response));
     }
     
     @Test
@@ -211,10 +207,10 @@ public class PushoverResponseFactoryTest {
         assertEquals(sound.getName(), "name");
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testMalformedCreateSoundResponse() throws IOException {
         when(response.getEntity()).thenReturn(new StringEntity("{"));
-        PushoverResponseFactory.createSoundSet(response);        
+        assertThrows(IOException.class, () -> PushoverResponseFactory.createSoundSet(response));
     }
 
     @Test
@@ -225,13 +221,13 @@ public class PushoverResponseFactoryTest {
         assertTrue(sounds.isEmpty());
     }
     
-    @Test(expected = IOException.class)
+    @Test
     public void testNullCreateSoundResponse() throws Exception {
-        assertNull(PushoverResponseFactory.createSoundSet(null));
+        assertThrows(IOException.class, () -> PushoverResponseFactory.createSoundSet(null));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testNullEntityCreateSoundResponse() throws Exception {
-        assertNull(PushoverResponseFactory.createSoundSet(response));
+        assertThrows(IOException.class, () -> PushoverResponseFactory.createSoundSet(response));
     }
 }
