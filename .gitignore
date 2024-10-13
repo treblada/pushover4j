@@ -2,6 +2,7 @@ cobertura.ser
 .classpath
 .project
 .settings
+.idea/
 target/
 *.swp
 .DS_Store

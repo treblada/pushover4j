@@ -1,14 +1,5 @@
 package net.pushover.client;
 
-import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
-import javax.activation.MimetypesFileTypeMap;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -20,6 +11,17 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Implementation of {@link PushoverClient}
@@ -189,10 +191,14 @@ public class PushoverRestClient implements PushoverClient {
 
         if (msg.getImage() != null) {
             File image = msg.getImage();
-            MimetypesFileTypeMap ftm = new MimetypesFileTypeMap();
-            ContentType ct = ContentType.create(ftm.getContentType(image));
-
-            entityBuilder.addBinaryBody("attachment", image, ct, image.getName());
+            try {
+                ContentType ct = Optional.ofNullable(Files.probeContentType(image.toPath()))
+                        .map(ContentType::create)
+                        .orElse(ContentType.APPLICATION_OCTET_STREAM);
+                entityBuilder.addBinaryBody("attachment", image, ct, image.getName());
+            } catch (IOException e) {
+                throw new PushoverException("Cannot probe content type of " + image.getAbsolutePath(), e);
+            }
         }
 
         if (msg.getHTML()) {
