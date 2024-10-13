@@ -170,9 +170,10 @@ public class PushoverRestClientTest {
         final String postBody = bytes.toString();
 
         assertTrue(postBody.contains(
-                "Content-Disposition: form-data; name=\"attachment\"; filename=\"test_image.jpg\"\r\n" +
-                        "Content-Type: image/jpeg\r\n" +
-                        "Content-Transfer-Encoding: binary")
+                """
+                        Content-Disposition: form-data; name="attachment"; filename="test_image.jpg"\r
+                        Content-Type: image/jpeg\r
+                        Content-Transfer-Encoding: binary""")
         );
     }
     
@@ -301,9 +302,12 @@ public class PushoverRestClientTest {
         entity.writeTo(bytes);
 
         final String postBody = bytes.toString();
-        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"html\"\r\n" +
-                "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
-                "Content-Transfer-Encoding: 8bit\r\n\r\n1"));
+        assertTrue(postBody.contains("""
+                Content-Disposition: form-data; name="html"\r
+                Content-Type: text/plain; charset=ISO-8859-1\r
+                Content-Transfer-Encoding: 8bit\r
+                \r
+                1"""));
 
     }
 
@@ -330,9 +334,12 @@ public class PushoverRestClientTest {
         entity.writeTo(bytes);
 
         final String postBody = bytes.toString();
-        assertTrue(postBody.contains("Content-Disposition: form-data; name=\"monospace\"\r\n" +
-                "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
-                "Content-Transfer-Encoding: 8bit\r\n\r\n1"));
+        assertTrue(postBody.contains("""
+                Content-Disposition: form-data; name="monospace"\r
+                Content-Type: text/plain; charset=ISO-8859-1\r
+                Content-Transfer-Encoding: 8bit\r
+                \r
+                1"""));
 
     }
 }

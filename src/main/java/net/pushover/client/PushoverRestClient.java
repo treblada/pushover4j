@@ -34,7 +34,7 @@ public class PushoverRestClient implements PushoverClient {
 
     public static final String PUSH_MESSAGE_URL = "https://api.pushover.net/1/messages.json";
     public static final String SOUND_LIST_URL = "https://api.pushover.net/1/sounds.json";
-    public static final String VALIDATE_USERGROUP_URL = "https://api.pushover.net/1/users/validate.json";
+    public static final String VALIDATE_USER_GROUP_URL = "https://api.pushover.net/1/users/validate.json";
     public static final String RECEIPT_CHECK_URL_FRAGMENT = "https://api.pushover.net/1/receipts/"; //needs receipt and then action attached to the end.
     
     private static final HttpUriRequest SOUND_LIST_REQUEST = new HttpGet(SOUND_LIST_URL);
@@ -42,7 +42,7 @@ public class PushoverRestClient implements PushoverClient {
 
     private HttpClient httpClient = HttpClients.custom().useSystemProperties().build();
 
-    private static final AtomicReference<Set<PushOverSound>> SOUND_CACHE = new AtomicReference<Set<PushOverSound>>();
+    private static final AtomicReference<Set<PushOverSound>> SOUND_CACHE = new AtomicReference<>();
 
     /**
      * Takes a PushoverMessage and requests to the push message API. Upon response 
@@ -90,7 +90,7 @@ public class PushoverRestClient implements PushoverClient {
      */
     public Response requestVerification(PushoverMessage msg) throws PushoverException {
 
-        final HttpPost post = new HttpPost(VALIDATE_USERGROUP_URL);
+        final HttpPost post = new HttpPost(VALIDATE_USER_GROUP_URL);
 
         final MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
 
@@ -145,11 +145,11 @@ public class PushoverRestClient implements PushoverClient {
     public Response cancelEmergencyMessage(String apiToken, String receipt) throws PushoverException {
          final HttpPost post = new HttpPost(RECEIPT_CHECK_URL_FRAGMENT + receipt +"/cancel.json");
 
-        final List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
 
-        nvps.add(new BasicNameValuePair("token", apiToken));
+        nameValuePairs.add(new BasicNameValuePair("token", apiToken));
         
-        post.setEntity(new UrlEncodedFormEntity(nvps, Charset.defaultCharset()));
+        post.setEntity(new UrlEncodedFormEntity(nameValuePairs, Charset.defaultCharset()));
 
         try {
             HttpResponse response = httpClient.execute(post);

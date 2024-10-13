@@ -1,18 +1,15 @@
 package net.pushover.client;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * encapsulate service response parsing / building
@@ -135,7 +132,7 @@ public class PushoverResponseFactory {
             throw new IOException(e.getCause());
         }
 
-        final Set<PushOverSound> sounds = new HashSet<PushOverSound>();
+        final Set<PushOverSound> sounds = new HashSet<>();
         if (r.sounds != null) {
             for (Map.Entry<String, String> e : r.sounds.entrySet()) {
                 sounds.add(new PushOverSound(e.getKey(), e.getValue()));
@@ -146,6 +143,7 @@ public class PushoverResponseFactory {
 
     // {"sounds":{"id":"name",...},"status":1}
     private static class SoundResponse {
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         Map<String, String> sounds;
     }
 }

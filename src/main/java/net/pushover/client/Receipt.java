@@ -14,10 +14,10 @@ import java.util.List;
 public class Receipt {
       private final int status;     //indicated if request was successful
       private final int acknowledged;     //indicates if emergency priority was acked
-      private final long acknowledged_at; //inidcates in unix time when acknoledged
+      private final long acknowledged_at; //indicates in unix time when acknoledged
       private final String acknowledged_by; //indicated the key that acked the message
       private final long last_delivered_at; //indicates when the last push was made
-      private final int expired;          //indicates if the expire time has elapsed
+      private final int expired;          //indicates if the expired time has elapsed
       private final long expires_at;       //time at which the emergency expires
       private final int called_back;      //indicates if the callback to the server occured
       private final long called_back_at;  //indicates when the callback took place

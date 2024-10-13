@@ -7,7 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -20,18 +21,17 @@ public class PushoverResponseFactoryTest {
     private HttpResponse response;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        assertNotNull(new PushoverResponseFactory());
+    public void setUp() {
         response = mock(HttpResponse.class);
     }
 
     @Test
-    public void testNullStausResponse() throws Exception {
+    public void testNullStausResponse() {
         assertThrows(IOException.class, () -> PushoverResponseFactory.createStatus(null));
     }
 
     @Test
-    public void testNullEntityStatusResponse() throws Exception {
+    public void testNullEntityStatusResponse() {
         assertThrows(IOException.class, () -> PushoverResponseFactory.createStatus(response));
     }
 
@@ -95,15 +95,11 @@ public class PushoverResponseFactoryTest {
     @Test
     public void testOKVerification() throws IOException {
         final String expectedRequestId = "1234";
-        final List<String> expectedDevices = new ArrayList<String>(){
-                {
-                      add("abc");
-                      add("efg");
-                      add("123");
-                }
-        };
+        final List<String> expectedDevices = Arrays.asList("abc", "efg", "123");
 
-        when(response.getEntity()).thenReturn(new StringEntity("{\"status\":1, \"request\":\"" + expectedRequestId +"\",\"devices\": "+expectedDevices.toString()+"}"));
+        when(response.getEntity()).thenReturn(new StringEntity(
+                "{\"status\":1, \"request\":\"" + expectedRequestId + "\",\"devices\": " + expectedDevices + "}"
+        ));
 
         final Response status = PushoverResponseFactory.createResponse(response);
         assertNotNull(status);
@@ -115,19 +111,13 @@ public class PushoverResponseFactoryTest {
     @Test
     public void testFailedVerification() throws IOException {
         final String expectedRequestId = "1234";
-        final List<String> expectedDevices = new ArrayList<String>(){
-                {
-                      add("requesteddevice");
-                }
-        };
-        final List<String> reportedErrors = new ArrayList<String>(){
-                {
-                      add("User not found");
-                }
-        };
-        
+        final List<String> expectedDevices = Collections.singletonList("requesteddevice");
+        final List<String> reportedErrors = Collections.singletonList("User not found");
 
-        when(response.getEntity()).thenReturn(new StringEntity("{\"status\":0, \"request\":\"" + expectedRequestId +"\",\"devices\": "+expectedDevices.toString()+", \"errors\":[\"User not found\"]}"));
+        when(response.getEntity()).thenReturn(new StringEntity(
+                "{\"status\":0, \"request\":\"" + expectedRequestId +"\",\"devices\": "+
+                        expectedDevices + ", \"errors\":[\"User not found\"]}"
+        ));
 
         final Response status = PushoverResponseFactory.createResponse(response);
         assertNotNull(status);
@@ -139,24 +129,24 @@ public class PushoverResponseFactoryTest {
     
     @Test
     public void testOkReceipt() throws IOException {
-        final long acknowledged_at = 12345678;
-        final String acknoledged_by = "user1";
-        final long last_delivered_at = 12345670;      
+        final long acknowledgedAt = 12345678;
+        final String acknowledgedBy = "user1";
+        final long lastDeliveredAt = 12345670;
         final int expired = 0;            
-        final long expires_at = 13000000; 
-        final int called_back = 0;        
-        final long called_back_at = 0;    
+        final long expiresAt = 13000000;
+        final int calledBack = 0;
+        final long calledBackAt = 0;
         final String request = "lkjhpoiumn";
 
         when(response.getEntity()).thenReturn(new StringEntity(
                   new StringBuilder().append("{\"status\":1, \"acknowledged\":1")
-                              .append(",\"acknowledged_at\":").append(acknowledged_at)
-                              .append(",\"acknowledged_by\":").append(acknoledged_by)
-                              .append(",\"last_delivered_at\":").append(last_delivered_at)
+                              .append(",\"acknowledged_at\":").append(acknowledgedAt)
+                              .append(",\"acknowledged_by\":").append(acknowledgedBy)
+                              .append(",\"last_delivered_at\":").append(lastDeliveredAt)
                               .append(",\"expired\":").append(expired)
-                              .append(",\"expires_at\":").append(expires_at)
-                              .append(",\"called_back\":").append(called_back)
-                              .append(",\"called_back_at\":").append(called_back_at)
+                              .append(",\"expires_at\":").append(expiresAt)
+                              .append(",\"called_back\":").append(calledBack)
+                              .append(",\"called_back_at\":").append(calledBackAt)
                               .append(",\"request\":").append(request)
                               .append("}").toString()
             ));
@@ -166,26 +156,23 @@ public class PushoverResponseFactoryTest {
         assertEquals(rcpt.getStatus(), 1);
         assertEquals(rcpt.getRequest(), request);
         assertEquals(rcpt.getAcknowledged(), 1);
-        assertEquals(rcpt.getAcknowledgedAt(), acknowledged_at);
-        assertEquals(rcpt.getAcknowledgedBy(), acknoledged_by);
-        assertEquals(rcpt.getCalledBack(), called_back);
-        assertEquals(rcpt.getCalledBackAt(), called_back_at);
+        assertEquals(rcpt.getAcknowledgedAt(), acknowledgedAt);
+        assertEquals(rcpt.getAcknowledgedBy(), acknowledgedBy);
+        assertEquals(rcpt.getCalledBack(), calledBack);
+        assertEquals(rcpt.getCalledBackAt(), calledBackAt);
         assertEquals(rcpt.getExpired(), expired);
-        assertEquals(rcpt.getExpiresAt(), expires_at);
-        assertEquals(rcpt.getLastDeliveredAt(), last_delivered_at);
+        assertEquals(rcpt.getExpiresAt(), expiresAt);
+        assertEquals(rcpt.getLastDeliveredAt(), lastDeliveredAt);
     }
     
     @Test
     public void testFailedReceipt() throws IOException {
-        final List<String> reportedErrors = new ArrayList<String>(){
-                {
-                      add("User not found");
-                }
-        };
-        
+        final List<String> reportedErrors = Collections.singletonList("User not found");
+
         when(response.getEntity()).thenReturn(new StringEntity(
                   new StringBuilder().append("{\"status\":0")
-                              .append(",\"errors\":[\"User not found\"]}").toString()
+                          .append(",\"errors\":[\"User not found\"]}")
+                          .toString()
             ));
 
         final Receipt rcpt = PushoverResponseFactory.createReceipt(response);
@@ -203,8 +190,8 @@ public class PushoverResponseFactoryTest {
         assertNotNull(sounds);
         assertFalse(sounds.isEmpty());
         PushOverSound sound = sounds.iterator().next(); 
-        assertEquals(sound.getId(), "id");
-        assertEquals(sound.getName(), "name");
+        assertEquals(sound.id(), "id");
+        assertEquals(sound.name(), "name");
     }
 
     @Test
@@ -222,12 +209,12 @@ public class PushoverResponseFactoryTest {
     }
     
     @Test
-    public void testNullCreateSoundResponse() throws Exception {
+    public void testNullCreateSoundResponse() {
         assertThrows(IOException.class, () -> PushoverResponseFactory.createSoundSet(null));
     }
 
     @Test
-    public void testNullEntityCreateSoundResponse() throws Exception {
+    public void testNullEntityCreateSoundResponse() {
         assertThrows(IOException.class, () -> PushoverResponseFactory.createSoundSet(response));
     }
 }

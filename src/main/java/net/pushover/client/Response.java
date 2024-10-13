@@ -22,21 +22,21 @@ public class Response {
       {
             status = 0;
             request = "";
-            errors = new ArrayList<String>();
+            errors = new ArrayList<>();
                   errors.add("Default constructor. No information available");
             receipt = "";
             remaining = Integer.MIN_VALUE;
-            devices = new ArrayList<String>();
+            devices = new ArrayList<>();
       }
       
       public Response(int status, String request)
       {
             this.status = status;
             this.request = request;
-            errors = new ArrayList<String>();
+            errors = new ArrayList<>();
             receipt = "";
             remaining = Integer.MIN_VALUE;
-            devices = new ArrayList<String>();
+            devices = new ArrayList<>();
       }
       
       public int getStatus() {

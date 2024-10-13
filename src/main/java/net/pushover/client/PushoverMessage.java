@@ -12,9 +12,9 @@ public class PushoverMessage {
 
     private String apiToken;        //API key for your application
  
-    private String userId;          //user's/group key ideitifing the recepient(s)
+    private String userId;          //user's/group key identifying the recipient(s)
 
-    private String message;         //Body of the message to send to the recepients
+    private String message;         //Body of the message to send to the recipients
 
     private String device;          //target a specific users device 
 
@@ -28,13 +28,13 @@ public class PushoverMessage {
 
     private Long timestamp;         //unix timestamp that will set a time in the message
     
-    private String sound;           //sound to play on the users device. Overrides their default sound. List of sounds can be requested via api
+    private String sound;           //sound to play on the user's device. Overrides their default sound. List of sounds can be requested via api
 
     private int retry;              //required for emergency (2) priority messages only, specifies how frequently to retry the message.  No less than 30 seconds
     
     private int expire;             //how long until the pushover system stops trying to send to the user(s). System uses smaller of specified or 86440 seconds (24 hours) 
     
-    private String emergencyCallbackUrl; //a publicly accessable webpage on your server to handle the acknoldegements of the emergency priority message.
+    private String emergencyCallbackUrl; //a publicly accessible webpage on your server to handle the acknowledgements of the emergency priority message.
 
     private File image; // As of version 3.0 of our iOS, Android, and Desktop apps, Pushover messages can include an image.
 
@@ -54,7 +54,7 @@ public class PushoverMessage {
     @SuppressWarnings("WeakerAccess")
     public static class Builder {
 
-        private PushoverMessage msg;
+        private final PushoverMessage msg;
 
         public Builder() {
             msg = new PushoverMessage();
@@ -95,7 +95,7 @@ public class PushoverMessage {
 
         /**
          * @param device  (optional) - your user's device identifier to send the message directly to that device,
-         * rather than all of the user's devices
+         * rather than all the user's devices
          * @return the current Builder instance
          */
         public Builder setDevice(String device) {
@@ -181,24 +181,13 @@ public class PushoverMessage {
         }
         
         /**
-         * @param url  (optional) - a publicly accessable URL that the system will post to
+         * @param url  (optional) - a publicly accessible URL that the system will post to
          * when the user acknowledges the alert.
          * @return the current Builder instance
          */
         public Builder setCallbackUrl(String url) {
             msg.emergencyCallbackUrl = url;
             return this;
-        }
-
-        /**
-         * @param image As of version 3.0 of our iOS, Android, and
-         * Desktop apps, Pushover messages can include an image.
-         * @deprecated use setImage instead
-         * @return the current Builder instance
-         */
-        @Deprecated
-        public Builder setAttachment(File image) {
-            return setImage(image);
         }
 
         /**
